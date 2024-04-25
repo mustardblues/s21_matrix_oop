@@ -46,14 +46,15 @@ class S21Matrix{
         S21Matrix operator - (const S21Matrix& other);
         S21Matrix operator * (const S21Matrix& other);
         S21Matrix operator * (const double num);
-        bool operator == (const S21Matrix& other);
+        bool operator == (const S21Matrix& other) const noexcept;
         S21Matrix& operator = (const S21Matrix& other);
         S21Matrix& operator = (S21Matrix&& other);
         S21Matrix& operator += (const S21Matrix& other);
         S21Matrix& operator -= (const S21Matrix& other);
         S21Matrix& operator *= (const S21Matrix& other);
         S21Matrix& operator *= (const double num);
-        const double& operator()(int row, int column);
+        double& operator()(int row, int column);
+        const double& operator()(int row, int column) const;
 
         void MatrixFill();
 };

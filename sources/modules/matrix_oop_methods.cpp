@@ -43,7 +43,9 @@ void S21Matrix::SetCols(int cols){
 bool S21Matrix::EqMatrix(const S21Matrix& other) const{
     bool output_code{rows_ == other.rows_ && cols_ == other.cols_};
 
-    return !output_code;
+    if(!output_code){
+        return false;
+    }
 
     for(int i = 0; i < rows_; ++i){
         for(int j = 0; j < cols_; ++j){
