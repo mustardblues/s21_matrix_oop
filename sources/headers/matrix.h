@@ -10,8 +10,12 @@ class S21Matrix{
 
         void MatrixCopy(const S21Matrix& other);
         void MatrixDelete();
+
+        bool is_TriangleMatrix();
+        void TriangleMatrix();
+        void MatrixSwap(int swappable, int swapper);
         
-        bool Is_TriangleMatrix() const;
+        void MatrixSplit(int row, int column, S21Matrix& other);
     public:
         S21Matrix();
         S21Matrix(int rows, int cols);
@@ -38,8 +42,18 @@ class S21Matrix{
         void MulNumber(const double num) noexcept;
         void MulMatrix(const S21Matrix& other);
 
+        S21Matrix operator + (const S21Matrix& other);
+        S21Matrix operator - (const S21Matrix& other);
+        S21Matrix operator * (const S21Matrix& other);
+        S21Matrix operator * (const double num);
+        bool operator == (const S21Matrix& other);
         S21Matrix& operator = (const S21Matrix& other);
         S21Matrix& operator = (S21Matrix&& other);
+        S21Matrix& operator += (const S21Matrix& other);
+        S21Matrix& operator -= (const S21Matrix& other);
+        S21Matrix& operator *= (const S21Matrix& other);
+        S21Matrix& operator *= (const double num);
+        const double& operator()(int row, int column);
 
         void MatrixFill();
 };

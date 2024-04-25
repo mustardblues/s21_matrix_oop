@@ -7,13 +7,17 @@ int main(void){
 
     obj_1.MatrixFill();
 
-    S21Matrix obj_2{4};
+    S21Matrix obj_2{3};
 
-    obj_2 = obj_1.Transpose();
+    obj_2 += obj_1;
 
-    cout << obj_1 << "\n" << endl;
+    obj_2 += obj_1;
 
-    cout << obj_2 << "\n" << endl;
+    cout << obj_1 << endl;
+
+    cout << obj_2 << endl;
+
+    cout << obj_2(0, 0) << endl;
 
     return 0;
 }   

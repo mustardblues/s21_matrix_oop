@@ -1,59 +1,5 @@
 #include "./../s21_matrix_oop.h"
 
-
-
-/* Constructors */
-
-S21Matrix::S21Matrix(int order) : S21Matrix(order, order){}
-
-S21Matrix::S21Matrix(int rows, int cols){
-
-    bool is_correct_order{rows > 0 && cols > 0};
-
-    if(!is_correct_order){
-        throw std::logic_error("Incorrect matrix order in S21Matrix class constructor.");
-    }
-
-    rows_ = rows;
-    cols_ = cols;
-
-    matrix = new double*[rows_]{};
-
-    for(int i = 0; i < rows_; ++i){
-        matrix[i] = new double[cols_]{};
-    }
-}
-
-S21Matrix::S21Matrix(const S21Matrix& other) : S21Matrix(other.rows_, other.cols_){
-    for(int i = 0; i < rows_; ++i){
-        for(int j = 0; j < cols_; ++j){
-            matrix[i][j] = other.matrix[i][j];
-        }
-    }
-}
-
-S21Matrix::S21Matrix(S21Matrix&& other) noexcept{
-    rows_ = other.rows_;
-    cols_ = other.cols_;
-
-    matrix = other.matrix;
-
-    other.rows_ = 0;
-    other.cols_ = 0;
-
-    other.matrix = nullptr;
-}
-
-S21Matrix::S21Matrix() : S21Matrix(DEFAULT_MATRIX_ORDER){}
-
-S21Matrix::~S21Matrix(){
-    this->MatrixDelete();
-}
-
-
-
-/* Class public functions */
-
 int S21Matrix::GetRows() const{ return rows_; }
 
 int S21Matrix::GetCols() const { return cols_; }
@@ -181,10 +127,6 @@ S21Matrix S21Matrix::Transpose() noexcept{
     return mod_matrix;
 }
 
-bool S21Matrix::Is_TriangleMatrix() const{
-
-}
-
 double S21Matrix::Determinant(){
     bool is_correct_order{rows_ == cols_};
 
@@ -194,52 +136,144 @@ double S21Matrix::Determinant(){
 
     S21Matrix temp{*this};
 
-    bool is_triangle_matrix{Is_TriangleMatrix()};
-}
+    double determinant = 0;
+    bool is_triangle_matrix{temp.is_TriangleMatrix()};
+    
+    while(is_triangle_matrix != true){
+        temp.TriangleMatrix();
 
-
-/* Class operators */
-
-S21Matrix& S21Matrix::operator = (const S21Matrix& other){
-    if(this != &other){
-        this->MatrixDelete();
-
-        rows_ = other.rows_;
-        cols_ = other.cols_;
-
-        S21Matrix copy_matrix{other};
+        is_triangle_matrix = temp.is_TriangleMatrix();
     }
 
-    return *this;
+    determinant = 1;
+
+    for(int i = 0; i < temp.rows_; ++i){
+        determinant *= temp.matrix[i][i];
+    }
+
+    return determinant;
 }
 
-S21Matrix& S21Matrix::operator = (S21Matrix&& other){
-    std::swap(rows_, other.rows_);
-    std::swap(cols_, other.cols_);
-    std::swap(matrix, other.matrix);
+bool S21Matrix::is_TriangleMatrix(){
+    bool output_code = true;
 
-    return *this;
-}
+    for(int i = 0; i < cols_; ++i){
+        for(int j = i + 1; j < rows_; ++j){
+            if(std::fabs(matrix[j][i]) > EPS){
+                i = cols_;
+                j = rows_;
 
-std::ostream& operator << (std::ostream& stream, const S21Matrix& object){
-    bool is_not_null{object.matrix != nullptr};
-
-    if(is_not_null){
-        stream << "\n";
-
-        for(int i = 0; i < object.rows_; ++i){
-            for(int j = 0; j < object.cols_; ++j){
-                stream << object.matrix[i][j] << " ";
+                output_code = false;
             }
-
-            stream << "\n";
         }
     }
-    else{
-        stream << 0;
+
+    return output_code;
+}
+
+void S21Matrix::TriangleMatrix(){
+    int max_row = 0, swap_count = 0;
+
+    double value = 0;
+
+    for(int i = 0; i < rows_; ++i){
+        max_row = i;
+
+        for(int j = i + 1; j < rows_; ++j){
+            if(std::fabs(matrix[j][i]) > std::fabs(matrix[max_row][i])){
+                max_row = j;
+            }
+        }
+
+        if(fabs(matrix[max_row][i]) > EPS){
+            if(max_row != i){
+                this->MatrixSwap(i, max_row);
+
+                ++swap_count;
+            }
+
+            for(int j = i + 1; j < rows_; ++j){
+                value = matrix[j][i] / matrix[i][i];
+
+                for (int k = 0; k < cols_; ++k) {
+                    matrix[j][k] -= value * matrix[i][k];
+                }
+            }
+        }
     }
 
-    return stream;
+    matrix[0][0] *= std::pow(-1, swap_count); // the first element is not 0.
+}
+
+void S21Matrix::MatrixSwap(int swappable, int swapper){
+    for(int i = 0; i < cols_; ++i){
+        std::swap(matrix[swappable][i], matrix[swapper][i]);
+    }
+}
+
+S21Matrix S21Matrix::CalcComplements(){
+    bool is_correct_order{rows_ == cols_};
+
+    if(!is_correct_order){
+        throw std::logic_error("Incorrect matrix order in S21Matrix::Determinant() function.");
+    }
+
+    S21Matrix mod_matrix{rows_, cols_};
+    S21Matrix temp{rows_ - 1, cols_ - 1};
+
+    for (int i = 0; i < rows_; ++i) {
+        for (int j = 0; j < cols_; ++j) {
+            this->MatrixSplit(i, j, temp);
+
+            mod_matrix.matrix[i][j] = temp.Determinant() * std::pow(-1, i + j);
+        }
+    }
+
+    return mod_matrix;
+}
+
+void S21Matrix::MatrixSplit(int row, int column, S21Matrix& other){
+    for (int i = 0; i < rows_; ++i) {
+        if (i < row) {
+            for (int j = 0; j < column; ++j) {
+                other.matrix[i][j] = matrix[i][j];
+            }
+
+            for (int j = column + 1; j < cols_; ++j) {
+                other.matrix[i][j - 1] = matrix[i][j];
+            }
+        } else if (i > row) {
+            for (int j = 0; j < column; ++j) {
+                other.matrix[i - 1][j] = matrix[i][j];
+            }
+
+            for (int j = column + 1; j < cols_; ++j) {
+                other.matrix[i - 1][j - 1] = matrix[i][j];
+            }
+        }
+    }
+}
+
+S21Matrix S21Matrix::InverseMatrix(){
+    bool is_correct_order{rows_ == cols_};
+
+    if(!is_correct_order){
+        throw std::logic_error("Incorrect matrix order in S21Matrix:InverseMatrix() function.");
+    }
+
+    double determinant = this->Determinant();
+
+    if(std::fabs(determinant) < EPS){
+        throw std::logic_error("Determinant matrix = 0 in S21Matrix:InverseMatrix() function.");
+    }
+
+    S21Matrix mod_matrix{*this};
+
+    mod_matrix = mod_matrix.Transpose().CalcComplements();
+
+    mod_matrix.MulNumber(1 / determinant);
+
+    return mod_matrix;
 }
 
 void S21Matrix::MatrixCopy(const S21Matrix& other){
@@ -273,7 +307,10 @@ void S21Matrix::MatrixDelete(){
 void S21Matrix::MatrixFill(){
     for(int i = 0; i < rows_; ++i){
         for(int j = 0; j < cols_; ++j){
+
             matrix[i][j] = i + j;
         }
     }
+
+    matrix[0][0] = 22;
 }
