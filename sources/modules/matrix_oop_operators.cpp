@@ -91,23 +91,3 @@ double& S21Matrix::operator()(int row, int column) {
 
   return this->matrix_[row][column];
 }
-
-std::ostream& operator<<(std::ostream& stream, const S21Matrix& object) {
-  bool is_not_null{object.matrix_ != nullptr};
-
-  if (is_not_null) {
-    stream << "\n";
-
-    for (int i = 0; i < object.rows_; ++i) {
-      for (int j = 0; j < object.cols_; ++j) {
-        stream << object.matrix_[i][j] << " ";
-      }
-
-      stream << "\n";
-    }
-  } else {
-    stream << 0;
-  }
-
-  return stream;
-}

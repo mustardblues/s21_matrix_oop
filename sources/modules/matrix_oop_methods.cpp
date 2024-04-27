@@ -285,13 +285,13 @@ S21Matrix S21Matrix::InverseMatrix() {
   return mod_matrix;
 }
 
-void S21Matrix::MatrixCreate(int rows, int cols){
+void S21Matrix::MatrixCreate(int rows, int cols) {
   rows_ = rows;
   cols_ = cols;
 
-  matrix_ = new double*[rows_]{};
+  matrix_ = new double* [rows_] {};
 
-  for(int i = 0; i < rows_; ++i){
+  for (int i = 0; i < rows_; ++i) {
     matrix_[i] = new double[cols]{};
   }
 }
@@ -326,14 +326,14 @@ void S21Matrix::MatrixDelete() {
 bool S21Matrix::MatrixFill(const int index_count, const double* fill) {
   bool is_correct_index_count{index_count == (rows_ * cols_)};
 
-  if(!is_correct_index_count){
+  if (!is_correct_index_count) {
     return false;
   }
 
   int index = 0;
 
-  for(int i = 0; i < rows_; ++i){
-    for(int j = 0; j < cols_; ++j){
+  for (int i = 0; i < rows_; ++i) {
+    for (int j = 0; j < cols_; ++j) {
       matrix_[i][j] = fill[index++];
     }
   }

@@ -13,9 +13,7 @@ S21Matrix::S21Matrix(int rows, int cols) {
   this->MatrixCreate(rows, cols);
 }
 
-S21Matrix::S21Matrix(const S21Matrix& other){
-  this->MatrixCopy(other);
-}
+S21Matrix::S21Matrix(const S21Matrix& other) { this->MatrixCopy(other); }
 
 S21Matrix::S21Matrix(S21Matrix&& other) noexcept {
   rows_ = other.rows_;

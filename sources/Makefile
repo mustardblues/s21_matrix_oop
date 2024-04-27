@@ -10,6 +10,7 @@ DIR_OBJ				:= ./objects/
 DIR_LIB				:= ./libs/
 DIR_HDR				:= ./headers/
 DIR_TEST			:= ./tests/unit_tests/
+DIR_GCOV			:= ./gcov_report/
 
 SRC					:= $(wildcard $(DIR_SRC)*.cpp)
 OBJ					:= $(patsubst %.cpp, %.o, $(notdir $(SRC)))
@@ -19,10 +20,10 @@ LIB					:= s21_matrix_oop.a
 BIN_TEST			:= GTest
 
 ifeq ($(shell uname), Linux)
-	SYSFLAGS		:= -pthread -lgtest -lstdc++ -lrt -lm --coverage
+	SYSFLAGS		:= -pthread -lgtest -lstdc++ -lrt -lm
 
 else
-	SYSFLAGS		:= -lgtest -lstdc++ --coverage
+	SYSFLAGS		:= -lgtest -lstdc++
 
 endif
 
@@ -34,9 +35,14 @@ vpath %.cpp $(DIR_SRC)
 
 all : 
 
-gcov_report : test
-	lcov -t "s21_matrix_oop" -o s21_matrix_oop.info -c -d ./ --no-external 
+gcov_report :
+	$(CXX) $(CXXFLAGS) --coverage $(DIR_TEST)*.cpp $(SRC) -o $(BIN_TEST) $(SYSFLAGS)
+	./$(BIN_TEST)
+
+	lcov -t "s21_matrix_oop" -o s21_matrix_oop.info -c -d . --no-external 
 	genhtml -o report s21_matrix_oop.info
+
+	rm *.gcno *.gcda *.info
 	open report/index.html
 
 test : $(LIB)
@@ -64,6 +70,7 @@ cppcheck :
 clean :
 	@- rm -rf $(DIR_OBJ)
 	@- rm -rf $(DIR_LIB)
+	@- rm -rf report
 	@- rm GTest
 
 rebuld :
