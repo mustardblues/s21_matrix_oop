@@ -39,11 +39,11 @@ gcov_report :
 	$(CXX) $(CXXFLAGS) --coverage $(DIR_TEST)*.cpp $(SRC) -o $(BIN_TEST) $(SYSFLAGS)
 	./$(BIN_TEST)
 
-	lcov -t "s21_matrix_oop" -o s21_matrix_oop.info -c -d . --no-external 
-	genhtml -o report s21_matrix_oop.info
+	lcov -t "matrix_oop" -o matrix_oop.info -c -d . --no-external 
+	genhtml -o $(DIR_GCOV) matrix_oop.info
 
-	rm *.gcno *.gcda *.info
-	open report/index.html
+	rm -rf *.gcno *.gcda *.info
+	open $(DIR_GCOV)/index.html
 
 test : $(LIB)
 	$(CXX) $(CXXFLAGS) $(DIR_TEST)*.cpp $(DIR_LIB)$(LIB) -o $(BIN_TEST) $(SYSFLAGS)
@@ -63,15 +63,17 @@ style :
 	clang-format -n --style=Google $(DIR_SRC)*.cpp $(DIR_HDR)*.h $(DIR_TEST)*.cpp s21_matrix_oop.h
 
 cppcheck :
-	
+	cppcheck --enable=all --force --suppress=missingIncludeSystem --language=c++ \
+	$(DIR_SRC)*.cpp $(DIR_HDR)*.h $(DIR_TEST)*.cpp s21_matrix_oop.h
 
 # ----------------------------------------------------------------------------- Abstracts Targets #
 
 clean :
 	@- rm -rf $(DIR_OBJ)
 	@- rm -rf $(DIR_LIB)
-	@- rm -rf report
+	@- rm -rf $(DIR_GCOV)
 	@- rm GTest
+	@- rm *.gcno *.gcda *.info
 
 rebuld :
 	make clean

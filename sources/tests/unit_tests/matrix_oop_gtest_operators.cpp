@@ -16,6 +16,9 @@ TEST(test_suite_MatrixOperators, test_Summation) {
     obj_2 = obj_2 + obj_1;
 
     EXPECT_EQ(obj_2, obj_3);
+
+    delete[] fill_1;
+    delete[] fill_2;
   }
 
   {
@@ -42,6 +45,9 @@ TEST(test_suite_MatrixOperators, test_Substruction) {
     obj_2 = obj_2 - obj_1;
 
     EXPECT_EQ(obj_2, obj_3);
+
+    delete[] fill_1;
+    delete[] fill_2;
   }
 
   {
@@ -66,6 +72,9 @@ TEST(test_suite_MatrixOperators, tets_Multuplication) {
     obj_1 = obj_1 * 2;
 
     EXPECT_EQ(obj_1, obj_2);
+
+    delete[] fill_1;
+    delete[] fill_2;
   }
 
   {
@@ -83,6 +92,9 @@ TEST(test_suite_MatrixOperators, tets_Multuplication) {
     obj_2 = obj_2 * obj_1;
 
     EXPECT_EQ(obj_2, obj_3);
+
+    delete[] fill_1;
+    delete[] fill_2;
   }
 
   {
@@ -104,6 +116,8 @@ TEST(test_suite_MatrixOperators, test_Equality) {
     obj_2.MatrixFill(9, fill);
 
     EXPECT_TRUE(obj_1 == obj_2);
+
+    delete[] fill;
   }
 
   {
@@ -115,6 +129,8 @@ TEST(test_suite_MatrixOperators, test_Equality) {
     obj_1.MatrixFill(4, fill);
 
     EXPECT_FALSE(obj_1 == obj_2);
+
+    delete[] fill;
   }
 
   {
@@ -137,6 +153,8 @@ TEST(test_suite_MatrixOperators, test_Assigment) {
     obj_2 = obj_1;
 
     EXPECT_EQ(obj_1, obj_2);
+
+    delete[] fill;
   }
 }
 
@@ -156,6 +174,9 @@ TEST(test_suite_MatrixOperators, test_AssigmentSummation) {
     obj_2 += obj_1;
 
     EXPECT_EQ(obj_2, obj_3);
+
+    delete[] fill_1;
+    delete[] fill_2;
   }
 
   {
@@ -182,6 +203,9 @@ TEST(test_suite_MatrixOperators, test_AssigmentSubstruction) {
     obj_2 -= obj_1;
 
     EXPECT_EQ(obj_2, obj_3);
+
+    delete[] fill_1;
+    delete[] fill_2;
   }
 
   {
@@ -206,6 +230,9 @@ TEST(test_suite_MatrixOperators, tets_AssigmentMultuplication) {
     obj_1 *= 2;
 
     EXPECT_EQ(obj_1, obj_2);
+
+    delete[] fill_1;
+    delete[] fill_2;
   }
 
   {
@@ -223,6 +250,9 @@ TEST(test_suite_MatrixOperators, tets_AssigmentMultuplication) {
     obj_2 *= obj_1;
 
     EXPECT_EQ(obj_2, obj_3);
+
+    delete[] fill_1;
+    delete[] fill_2;
   }
 
   {
@@ -237,11 +267,13 @@ TEST(test_suite_MatrixOperators, tets_Indexation) {
   {
     S21Matrix obj_1{3, 3};
 
-    const double* fill_1{new double[]{1, 2, 3, 4, 5, 6, 7, 8, 9}};
+    const double* fill{new double[]{1, 2, 3, 4, 5, 6, 7, 8, 9}};
 
-    obj_1.MatrixFill(9, fill_1);
+    obj_1.MatrixFill(9, fill);
 
     EXPECT_EQ(obj_1(1, 1), 5);
+
+    delete[] fill;
   }
 
   {
@@ -253,11 +285,13 @@ TEST(test_suite_MatrixOperators, tets_Indexation) {
   {
     S21Matrix obj_1{3, 3};
 
-    const double* fill_1{new double[]{1, 2, 3, 4, 5, 6, 7, 8, 9}};
+    const double* fill{new double[]{1, 2, 3, 4, 5, 6, 7, 8, 9}};
 
-    obj_1.MatrixFill(9, fill_1);
+    obj_1.MatrixFill(9, fill);
 
     EXPECT_THROW(obj_1(3, 3), std::out_of_range);
+
+    delete[] fill;
   }
 
   {

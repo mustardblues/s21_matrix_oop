@@ -11,6 +11,8 @@ TEST(test_suite_MatrixMethods, test_EqMatrix) {
     obj_2.MatrixFill(9, fill);
 
     EXPECT_EQ(obj_1, obj_2);
+
+    delete[] fill;
   }
 
   {
@@ -22,6 +24,8 @@ TEST(test_suite_MatrixMethods, test_EqMatrix) {
     obj_1.MatrixFill(4, fill);
 
     EXPECT_FALSE(obj_1.EqMatrix(obj_2));
+
+    delete[] fill;
   }
 
   {
@@ -48,6 +52,9 @@ TEST(test_suite_MatrixMethods, test_SumMatrix) {
     obj_2.SumMatrix(obj_1);
 
     EXPECT_EQ(obj_2, obj_3);
+
+    delete[] fill_1;
+    delete[] fill_2;
   }
 
   {
@@ -74,6 +81,9 @@ TEST(test_suite_MatrixMethods, test_SubMatrix) {
     obj_2.SubMatrix(obj_1);
 
     EXPECT_EQ(obj_2, obj_3);
+
+    delete[] fill_1;
+    delete[] fill_2;
   }
 
   {
@@ -98,6 +108,9 @@ TEST(test_suite_MatrixMethods, tets_MulNumber) {
     obj_1.MulNumber(2);
 
     EXPECT_EQ(obj_1, obj_2);
+
+    delete[] fill_1;
+    delete[] fill_2;
   }
 }
 
@@ -117,6 +130,9 @@ TEST(test_suite_MatrixMethods, test_MulMatrix) {
     obj_2.MulMatrix(obj_1);
 
     EXPECT_EQ(obj_2, obj_3);
+
+    delete[] fill_1;
+    delete[] fill_2;
   }
 
   {
@@ -141,6 +157,9 @@ TEST(test_suite_MatrixMethods, test_Transpose) {
     S21Matrix obj_2{obj_1.Transpose()};
 
     EXPECT_EQ(obj_2, obj_3);
+
+    delete[] fill_1;
+    delete[] fill_2;
   }
 }
 
@@ -156,6 +175,9 @@ TEST(test_suite_MatrixMethods, test_CalcComplements) {
     obj_2.MatrixFill(9, fill_2);
 
     EXPECT_EQ(obj_1.CalcComplements(), obj_2);
+
+    delete[] fill_1;
+    delete[] fill_2;
   }
 
   {
@@ -174,6 +196,8 @@ TEST(test_suite_MatrixMethods, test_Determinant) {
     obj_1.MatrixFill(9, fill);
 
     EXPECT_EQ(obj_1.Determinant(), 184);
+
+    delete[] fill;
   }
 
   {
@@ -197,6 +221,9 @@ TEST(test_suite_MatrixMethods, test_InverseMatrix) {
     obj_2.MatrixFill(9, fill_2);
 
     EXPECT_EQ(obj_1.InverseMatrix(), obj_2);
+
+    delete[] fill_1;
+    delete[] fill_2;
   }
 
   {

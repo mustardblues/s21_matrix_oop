@@ -20,7 +20,7 @@ class S21Matrix {
   S21Matrix(int rows, int cols);
   S21Matrix(const S21Matrix& other);
   S21Matrix(S21Matrix&& other) noexcept;
-  S21Matrix(int order);
+  explicit S21Matrix(int order);
   ~S21Matrix();
 
   bool EqMatrix(const S21Matrix& other) const;

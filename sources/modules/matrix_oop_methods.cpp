@@ -178,12 +178,10 @@ bool S21Matrix::is_TriangleMatrix() {
 }
 
 void S21Matrix::TriangleMatrix() {
-  int max_row = 0, swap_count = 0;
-
-  double value = 0;
+  int swap_count = 0;
 
   for (int i = 0; i < rows_; ++i) {
-    max_row = i;
+    int max_row = i;
 
     for (int j = i + 1; j < rows_; ++j) {
       if (std::fabs(matrix_[j][i]) > std::fabs(matrix_[max_row][i])) {
@@ -199,7 +197,7 @@ void S21Matrix::TriangleMatrix() {
       }
 
       for (int j = i + 1; j < rows_; ++j) {
-        value = matrix_[j][i] / matrix_[i][i];
+        double value = matrix_[j][i] / matrix_[i][i];
 
         for (int k = 0; k < cols_; ++k) {
           matrix_[j][k] -= value * matrix_[i][k];
@@ -286,6 +284,13 @@ S21Matrix S21Matrix::InverseMatrix() {
 }
 
 void S21Matrix::MatrixCreate(int rows, int cols) {
+  bool is_correct_order{rows > 0 && cols > 0};
+
+  if (!is_correct_order) {
+    throw std::logic_error(
+        "Incorrect matrix order in S21Matrix class constructor.");
+  }
+  
   rows_ = rows;
   cols_ = cols;
 

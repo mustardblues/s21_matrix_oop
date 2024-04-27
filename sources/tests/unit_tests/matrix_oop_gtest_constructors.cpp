@@ -24,5 +24,7 @@ TEST(test_suite_MatrixConstructors, test_MoveConstructor) {
     EXPECT_EQ(obj_2, obj_3);
     EXPECT_EQ(obj_1.GetRows(), 0);
     EXPECT_EQ(obj_1.GetCols(), 0);
+
+    delete[] fill;
   }
 }
