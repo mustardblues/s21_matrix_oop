@@ -34,12 +34,7 @@ bool S21Matrix::operator==(const S21Matrix& other) const noexcept {
 
 S21Matrix& S21Matrix::operator=(const S21Matrix& other) {
   if (this != &other) {
-    this->MatrixDelete();
-
-    rows_ = other.rows_;
-    cols_ = other.cols_;
-
-    S21Matrix copy_matrix{other};
+    this->MatrixCopy(other);
   }
 
   return *this;
@@ -48,7 +43,7 @@ S21Matrix& S21Matrix::operator=(const S21Matrix& other) {
 S21Matrix& S21Matrix::operator=(S21Matrix&& other) {
   std::swap(rows_, other.rows_);
   std::swap(cols_, other.cols_);
-  std::swap(matrix, other.matrix);
+  std::swap(matrix_, other.matrix_);
 
   return *this;
 }
@@ -82,7 +77,7 @@ const double& S21Matrix::operator()(int row, int column) const {
         "Incorrect index in S21Matrix:operator() operator.");
   }
 
-  return this->matrix[row][column];
+  return this->matrix_[row][column];
 }
 
 double& S21Matrix::operator()(int row, int column) {
@@ -94,18 +89,18 @@ double& S21Matrix::operator()(int row, int column) {
         "Incorrect index in S21Matrix:operator() operator.");
   }
 
-  return this->matrix[row][column];
+  return this->matrix_[row][column];
 }
 
 std::ostream& operator<<(std::ostream& stream, const S21Matrix& object) {
-  bool is_not_null{object.matrix != nullptr};
+  bool is_not_null{object.matrix_ != nullptr};
 
   if (is_not_null) {
     stream << "\n";
 
     for (int i = 0; i < object.rows_; ++i) {
       for (int j = 0; j < object.cols_; ++j) {
-        stream << object.matrix[i][j] << " ";
+        stream << object.matrix_[i][j] << " ";
       }
 
       stream << "\n";

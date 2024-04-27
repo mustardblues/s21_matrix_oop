@@ -7,8 +7,9 @@ class S21Matrix {
 
  private:
   int rows_{0}, cols_{0};
-  double** matrix{nullptr};
+  double** matrix_{nullptr};
 
+  void MatrixCreate(int rows, int cols);
   void MatrixCopy(const S21Matrix& other);
   void MatrixDelete();
 
@@ -58,7 +59,7 @@ class S21Matrix {
   double& operator()(int row, int column);
   const double& operator()(int row, int column) const;
 
-  bool MatrixFill(const int index_count, const double* fill)
+  bool MatrixFill(const int index_count, const double* fill);
 };
 
 #endif  // _MATRIX_H_
