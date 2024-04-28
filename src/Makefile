@@ -29,8 +29,6 @@ endif
 
 # ----------------------------------------------------------------------------------------- Targets
 
-.PHONY : all clean rebuild 
-
 vpath %.cpp $(DIR_SRC)
 
 all : 
@@ -82,3 +80,5 @@ clean :
 rebuld :
 	make clean
 	make all
+
+.PHONY : all clean rebuild 
